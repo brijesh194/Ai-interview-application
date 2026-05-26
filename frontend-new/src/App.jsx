@@ -58,7 +58,7 @@ function PracticePage() {
   const fetchQuestions = async (category) => {
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/practice-questions', { category });
+      const res = await axios.post('https://ai-interview-application-1-7eg8.onrender.com/api/practice-questions', { category });
       setQuestions(res.data.questions);
     } catch (err) {
       alert("Error fetching questions!");
@@ -75,7 +75,7 @@ function PracticePage() {
     const endpoint = isAlreadyLiked ? 'unlike' : 'like';
 
     try {
-      const res = await axios.post(`http://localhost:5000/api/questions/${endpoint}/${id}`);
+      const res = await axios.post(`https://ai-interview-application-1-7eg8.onrender.com/api/questions/${endpoint}/${id}`);
 
       // Local State update karo
       const updatedQuestions = [...questions];
@@ -96,7 +96,7 @@ function PracticePage() {
   // 🔥 LIKE FUNCTION (MongoDB Update)
   const handleLike = async (id, index) => {
     try {
-      const res = await axios.post(`http://localhost:5000/api/questions/like/${id || index}`);
+      const res = await axios.post(`https://ai-interview-application-1-7eg8.onrender.com/api/questions/like/${id || index}`);
       // Update local state to show instant like
       const newQuestions = [...questions];
       newQuestions[index].likes = (newQuestions[index].likes || 0) + 1;
@@ -109,7 +109,7 @@ function PracticePage() {
     const text = commentText[index];
     if (!text) return;
     try {
-      await axios.post(`http://localhost:5000/api/questions/comment/${id || index}`, { text });
+      await axios.post(`https://ai-interview-application-1-7eg8.onrender.com/api/questions/comment/${id || index}`, { text });
       alert("Comment posted!");
       setCommentText({ ...commentText, [index]: "" });
     } catch (err) { console.log("Comment failed"); }
@@ -120,7 +120,7 @@ function PracticePage() {
   const loadMoreQuestions = async () => {
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/practice-questions', {
+      const res = await axios.post('https://ai-interview-application-1-7eg8.onrender.com/api/practice-questions', {
         category: selectedCat,
         currentCount: questions.length // Batana ki abhi hamare paas kitne hain
       });
@@ -291,7 +291,7 @@ function TopQuestions() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/top-questions')
+    axios.get('https://ai-interview-application-1-7eg8.onrender.com/api/top-questions')
       .then(res => {
         setTopList(res.data);
         setLoading(false);
@@ -640,7 +640,7 @@ const InterviewHome = () => {
     formData.append('difficulty', difficulty);
     formData.append('language', language === 'hi-IN' ? 'Hinglish' : 'English');
     try {
-      const res = await axios.post('http://localhost:5000/api/start-interview', formData);
+      const res = await axios.post('https://ai-interview-application-1-7eg8.onrender.com/api/start-interview', formData);
       setQuestions(res.data.questions);
     } catch (err) { alert("Server Error!"); }
     setLoading(false);
@@ -656,7 +656,7 @@ const InterviewHome = () => {
     setTranscript('');
     setIsAiThinking(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/next-question', { currentQuestion: questions[currentQuestionIndex], userAnswer: currentAns, history: updatedHistory, jd: jd, category: selectedCategory, difficulty: difficulty, language: language });
+      const res = await axios.post('https://ai-interview-application-1-7eg8.onrender.com/api/next-question', { currentQuestion: questions[currentQuestionIndex], userAnswer: currentAns, history: updatedHistory, jd: jd, category: selectedCategory, difficulty: difficulty, language: language });
       const data = res.data;
       setIsCodingRound(data.isCodingRound);
       setQuestions(prev => [...prev, data.nextQuestion]);
@@ -672,7 +672,7 @@ const InterviewHome = () => {
     const currentAns = transcript || answers[currentQuestionIndex] || "No answer";
     const finalHistory = [...history, { q: questions[currentQuestionIndex], a: currentAns }];
     try {
-      const res = await axios.post('http://localhost:5000/api/analyze-interview', { history: finalHistory, jd: jd, category: selectedCategory, difficulty: difficulty, emotionSummary: emotionLog });
+      const res = await axios.post('https://ai-interview-application-1-7eg8.onrender.com/api/analyze-interview', { history: finalHistory, jd: jd, category: selectedCategory, difficulty: difficulty, emotionSummary: emotionLog });
       const data = typeof res.data === 'string' ? JSON.parse(res.data) : res.data;
       setInterviewAnalysis(data);
       setShowResult(true);
